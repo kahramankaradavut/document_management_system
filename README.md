@@ -1,5 +1,18 @@
 # Document Management System (Node.js & PostgreSQL)
 
+## İçindekiler
+
+- [Proje Hakkında](#proje-hakkında)
+- [Özellikler](#özellikler)
+- [Kurulum Adımları](#kurulum-adımları)
+- [Proje Yapısı](#proje-yapısı)
+- [API Endpointleri](#api-endpointleri)
+- [Veritabanı Tabloları](#veritabanı-tabloları)
+- [INSERT İşlemleri](#insert-işlemleri)
+- [INSERT Fonksiyonları](#insert-fonksiyonları)
+- [Lisans](#lisans)
+
+
 ### Proje Hakkında
 Bu proje, Node.js ve PostgreSQL kullanılarak geliştirilmiş bir Doküman Yönetim Sistemi'dir. Projede, birimlerin (units) alt birimlere sahip olabileceği ve bu birimlerin doküman yükleyebileceği, bu dokümanları revize edebileceği bir yapı bulunmaktadır. Birimlerin alt birimleri ve yüklü dokümanları recursive olarak alınabilir.
 
