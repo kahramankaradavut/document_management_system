@@ -136,6 +136,49 @@ INSERT INTO units (name, parent_id) VALUES ($1, $2) RETURNING *
 ```
 
 
+## INSERT Fonksiyonları
+
+### 1. Belge Oluşturma:
+
+```js
+const createDocument = async (unitId, originalName, filePath, subject) => {
+  const result = await pool.query(
+    `INSERT INTO documents (unit_id, original_name, subject, file_path)
+     VALUES ($1, $2, $3, $4) RETURNING id`,
+    [unitId, originalName, subject, filePath]
+  );
+  return result.rows[0].id;
+};
+```
+
+### 2. Revizyon Ekleme:
+
+```js
+const updateDocumentRevision = async (documentId, filePath, newVersion, revisionReason) => {
+  await pool.query(
+    `INSERT INTO document_revisions (document_id, version_number, file_path, revision_reason)
+     VALUES ($1, $2, $3, $4)`,
+    [documentId, newVersion, filePath, revisionReason]
+  );
+  await pool.query(
+    `UPDATE documents SET current_version = $1 WHERE id = $2`,
+    [newVersion, documentId]
+  );
+};
+```
+
+### 3. Birim Oluşturma:
+
+```js
+const createUnit = async (name, parentId = null) => {
+    const result = await pool.query(
+        'INSERT INTO units (name, parent_id) VALUES ($1, $2) RETURNING *',
+        [name, parentId]
+    );
+    return result.rows[0];
+};
+```
+
 
 ## Lisans
 
