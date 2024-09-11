@@ -51,10 +51,10 @@ const updateDocument = async (req, res) => {
   
       //console.log((await documentModel.getDocumentRevisions(documentId)).length);
 
-      if((await documentModel.getDocumentRevisions(documentId)).length > 0) {
 
-      // Dokümanın mevcut revizyonlarını al
-      const document = await documentModel.getDocumentRevisions(documentId);
+
+      // Dokümanın mevcut versiyon numarasını al
+      const document = await documentModel.getDocumentById(documentId);
   
       // Eğer doküman bulunamazsa
       if (document.length === 0) {
@@ -62,17 +62,17 @@ const updateDocument = async (req, res) => {
       }
   
       // Son revizyon numarasını al
-      const latestVersion = document[0].version_number;
+      const latestVersion = document[0].current_version;
   
       // Yeni versiyonu bir artırarak belirle
       const newVersion = latestVersion + 1;
       // Belgeyi güncelle
       await documentModel.updateDocumentRevision(documentId, file.path, newVersion, revisionReason);
-      } else {
-      const newVersion = 1
+
+
       // Belgeyi güncelle
-      await documentModel.updateDocumentRevision(documentId, file.path, newVersion, revisionReason);
-      }
+
+
       res.status(200).json({ message: 'Document updated successfully.', revisionReason});
     } catch (error) {
       console.error(error);
@@ -83,7 +83,7 @@ const updateDocument = async (req, res) => {
   
 // Belirli bir dokümanı ve revizyonlarını getirme
 const getDocument = async (req, res) => {
-  const { id } = req.params; // URL'den doküman ID'sini alıyoruz
+  const { id } = req.params; 
 
   try {
     // Dokümanı veritabanından al
@@ -96,7 +96,7 @@ const getDocument = async (req, res) => {
     // Revizyonları al
     const revisions = await documentModel.getDocumentRevisions(id);
 
-    // Doküman bilgisine revizyonları ekleyin
+    // Doküman bilgisine revizyonları ekle
     document[0].revisions = revisions;
 
     res.status(200).json(document[0]);
@@ -105,6 +105,26 @@ const getDocument = async (req, res) => {
     res.status(500).json({ message: 'Server error.' });
   }
 };
+
+// Son halinden bir önceki halinin file_path'ini getir
+const getPreviousRevisionFilePath = async (req, res) => {
+  const { documentId } = req.params;
+
+  try {
+    const previousRevision = await documentModel.getPreviousRevisionFilePath(documentId);
+
+    if (previousRevision.length === 0) {
+      return res.status(404).json({ message: 'No previous revision found for this document.' });
+    }
+
+    res.status(200).json(previousRevision[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+
   
 
 module.exports = {
@@ -112,4 +132,5 @@ module.exports = {
   updateDocument,
   uploadMiddleware: upload.single('file'), 
   getDocument,
+  getPreviousRevisionFilePath,
 };

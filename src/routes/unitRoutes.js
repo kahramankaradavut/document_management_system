@@ -14,5 +14,8 @@ router.get('/:unitId/root-parent', unitController.getRootParentUnit);
 // birimin bir üst birimi
 router.get('/:unitId/parent', unitController.getParentUnit);
 
+// Tüm birimleri ve dokümanlarını child-parent yapısında getirme
+router.get('/with-documents', unitController.getAllUnitsWithDocuments);
+
 
 module.exports = router;

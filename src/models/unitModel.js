@@ -48,6 +48,16 @@ const getRootParentUnit = async (unitId) => {
     );
     return result.rows;
   };
+
+  const getAllUnitsWithDocuments = async () => {
+    const result = await pool.query(
+      `SELECT units.*,
+              (SELECT json_agg(dokuman)
+               FROM (SELECT * FROM documents WHERE units.id = unit_id) dokuman) AS documents
+       FROM units`
+    );
+    return result.rows;
+  };
   
 
 module.exports = {
@@ -55,4 +65,5 @@ module.exports = {
     getAllUnits,
     getRootParentUnit,
     getParentUnit,
+    getAllUnitsWithDocuments
 };
