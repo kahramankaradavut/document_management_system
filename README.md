@@ -8,7 +8,7 @@
 - [Proje Yapısı](#proje-yapısı)
 - [API Endpointleri](#api-endpointleri)
 - [Veritabanı Tabloları](#veritabanı-tabloları)
-- [INSERT İşlemleri](#insert-islemleri)
+- [INSERT Örnekleri](#insert-örnekleri)
 - [INSERT Fonksiyonları](#insert-fonksiyonları)
 - [Lisans](#lisans)
 
@@ -126,7 +126,7 @@ Bu proje, Node.js ve PostgreSQL kullanılarak geliştirilmiş bir Doküman Yöne
 
 
 
-## INSERT İşlemleri
+## INSERT Örnekleri
 
 ### 1. Doküman Ekleme
 
